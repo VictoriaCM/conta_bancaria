@@ -2,9 +2,11 @@ package conta_bancaria;
 
 import java.io.IOException;
 import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 
 import conta_bancaria.controller.ContaController;
+import conta_bancaria.model.Conta;
 import conta_bancaria.model.ContaCorrente;
 import conta_bancaria.model.ContaPoupanca;
 import conta_bancaria.util.Cores;
@@ -17,9 +19,9 @@ public class Menu {
 
 		ContaController contas = new ContaController();
 
-		int opcao, numero, agencia, tipo, aniversario;
+		int opcao, numero, agencia, tipo, aniversario, numeroDestino;
 		String titular;
-		float saldo, limite;
+		float saldo, limite, valor;
 
 
 		while (true) {
@@ -109,7 +111,37 @@ public class Menu {
 					System.out.println("Digite o numero da Conta: ");
 					numero = sc.nextInt();
 					
-					if(contas.buscarNaCollection(numero).isPresent()) {
+					Optional <Conta> conta = contas.buscarNaCollection(numero);
+					
+					if(conta.isPresent()) {
+						System.out.println("Digite o número da Agência: ");
+						agencia = sc.nextInt();
+
+						System.out.println("Digite o número do Titular: ");
+						sc.skip("\\R");
+						titular = sc.nextLine();
+
+						System.out.println("Digite o Saldo da conta: ");
+						saldo = sc.nextFloat();
+						
+						tipo = conta.get().getTipo();
+						
+						switch (tipo) {
+						case 1 -> {
+							System.out.println("Digite o limite da conta: ");
+							limite = sc.nextFloat();
+							contas.cadastrar(
+									new ContaCorrente(contas.gerarNumero(), agencia, tipo, titular, saldo, limite));
+
+						}
+						case 2 -> {
+							System.out.println("Digite o dia  do Aniversário da Conta: ");
+							aniversario = sc.nextInt();
+							contas.cadastrar(
+									new ContaPoupanca(contas.gerarNumero(), agencia, tipo, titular, saldo, aniversario));
+						}
+						}
+
 						
 					}else
 						System.out.println("A conta número:" + numero + "não foi encontrada!");
@@ -129,6 +161,14 @@ public class Menu {
 
 				case 6:
 					System.out.println("Saque \n\n");
+					
+					System.out.println("Digite o Numero da Conta: ");
+					saldo = sc.nextInt();
+					
+					System.out.println("Digite o Valor do Saque: ");
+					saldo = sc.nextFloat();
+					
+					contas.sacar(numero, valor);
 					keyPress();
 					break;
 
