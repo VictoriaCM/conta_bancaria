@@ -1,5 +1,7 @@
 package conta_bancaria;
 
+import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import conta_bancaria.controller.ContaController;
@@ -9,9 +11,9 @@ import conta_bancaria.util.Cores;
 
 public class Menu {
 
-	static Scanner sc = new Scanner(System.in);
-
 	public static void main(String[] args) {
+
+		Scanner sc = new Scanner(System.in);
 
 		ContaController contas = new ContaController();
 
@@ -19,13 +21,6 @@ public class Menu {
 		String titular;
 		float saldo, limite;
 
-		ContaCorrente cc1 = new ContaCorrente(contas.gerarNumero(), 123, 1, "João da Silva", 1000.0f, 100.0f);
-		contas.cadastrar(cc1);
-
-		ContaPoupanca cp1 = new ContaPoupanca(contas.gerarNumero(), 123, 2, "João da Silva", 1000.0f, 9);
-		contas.cadastrar(cp1);
-
-		int opcao;
 
 		while (true) {
 			System.out.println(Cores.TEXT_BLACK_BOLD + Cores.ANSI_WHITE_BACKGROUND
@@ -49,8 +44,13 @@ public class Menu {
 			System.out.println("|Entre com a opção desejada:                         |");
 			System.out.println("******************************************************" + Cores.TEXT_RESET);
 
-			opcao = sc.nextInt();
-
+			try {
+				opcao = sc.nextInt();
+			} catch (InputMismatchException e) {
+				System.out.println("Digite valores inteiros!");
+				sc.nextLine();
+				opcao = 0;
+			}
 			if (opcao == 9) {
 				System.out.println("\nNosso, seu, Meow Bank!");
 				sobre();
@@ -91,41 +91,60 @@ public class Menu {
 
 				case 2:
 					System.out.println("Listar todas as contas \n\n");
-
+					keyPress();
 					break;
 
 				case 3:
 					System.out.println("Consultar dados da Conta \n\n");
 
+					System.out.println("Digite o número da conta: ");
+					numero = sc.nextInt();
+
+					keyPress();
 					break;
 
 				case 4:
 					System.out.println("Atualizar Dados da Conta \n\n");
-
+					
+					System.out.println("Digite o numero da Conta: ");
+					numero = sc.nextInt();
+					
+					if(contas.buscarNaCollection(numero).isPresent()) {
+						
+					}else
+						System.out.println("A conta número:" + numero + "não foi encontrada!");
+					keyPress();
 					break;
 
 				case 5:
 					System.out.println("Encerrar Conta \n\n");
-
+					
+					System.out.println("Digite o numero da Conta: ");
+					numero = sc.nextInt();
+					
+					contas.deletar(numero);
+					
+					keyPress();
 					break;
 
 				case 6:
 					System.out.println("Saque \n\n");
-
+					keyPress();
 					break;
 
 				case 7:
 					System.out.println("Depósito \n\n");
-
+					keyPress();
 					break;
 
 				case 8:
 					System.out.println("Transferência entre Contas \n\n");
-
+					keyPress();
 					break;
 
 				default:
 					System.out.println("Opção Inválida! tente novamente.\n");
+					keyPress();
 					break;
 
 				}
@@ -143,4 +162,16 @@ public class Menu {
 
 	}
 
+	public static void keyPress() {
+
+		try {
+
+			System.out.println("\n\nPressione a tecla Enter para continuar...");
+			System.in.read();
+
+		} catch (IOException e) {
+
+			System.out.println("Você pressionou uma tecla inválida");
+		}
+	}
 }
