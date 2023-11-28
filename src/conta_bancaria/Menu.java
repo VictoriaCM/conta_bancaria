@@ -57,7 +57,7 @@ public class Menu {
 			}catch(InputMismatchException e) {
 				System.out.println("Digite valores inteiros!");
 				leia.nextLine();
-				opcao = 0;
+				opcao = 100;
 			}
 
 			if (opcao == 9) {
@@ -223,13 +223,12 @@ public class Menu {
 	}
 
 	public static void sobre() {
-		System.out.println(Cores.TEXT_GREEN);
-		System.out.println("\n*********************************************************");
-		System.out.println("Projeto Desenvolvido por: ");
-		System.out.println("Generation Brasil - generation@generation.org");
-		System.out.println("github.com/conteudoGeneration");
-		System.out.println("*********************************************************");
-		System.out.println(Cores.TEXT_RESET);
+		System.out.println(Cores.TEXT_BLACK_BOLD + Cores.ANSI_WHITE_BACKGROUND
+				+ "\n******************************************************");
+		System.out.println("|Projeto desenvolvido por:                           |");
+		System.out.println("|Victória Moraes - victoria.candido.mm@gmail.com     |");
+		System.out.println("|https://github.com/VictoriaCM                       |");
+		System.out.println("******************************************************" + Cores.TEXT_RESET);
 	}
 	
 	public static void keyPress() {

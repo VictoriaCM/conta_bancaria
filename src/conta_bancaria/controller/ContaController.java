@@ -10,13 +10,13 @@ public class ContaController implements ContaRepository {
 
 	// Criando a Collection
 	private ArrayList<Conta> listaContas = new ArrayList<Conta>();
-	
+
 	// Variável para receber o numero da Conta
 	int numero = 0;
 
 	@Override
 	public void procurarpornumero(int numero) {
-		
+
 		Optional<Conta> conta = buscarNaCollection(numero);
 
 		if (conta.isPresent())
@@ -41,7 +41,7 @@ public class ContaController implements ContaRepository {
 
 	@Override
 	public void atualizar(Conta conta) {
-		
+
 		Optional<Conta> buscaConta = buscarNaCollection(conta.getNumero());
 
 		if (buscaConta.isPresent()) {
@@ -51,12 +51,12 @@ public class ContaController implements ContaRepository {
 			System.out.println("A Conta número: " + conta.getNumero() + " não foi encontrada!");
 
 	}
-	
+
 	@Override
 	public void deletar(int numero) {
 
 		Optional<Conta> conta = buscarNaCollection(numero);
-		
+
 		if (conta.isPresent()) {
 			if (listaContas.remove(conta.get()) == true)
 				System.out.println("A conta numero: " + numero + " foi excluida com sucesso!");
@@ -90,7 +90,7 @@ public class ContaController implements ContaRepository {
 	}
 
 	@Override
-	public void tranferir(int numeroOrigem, int numeroDestino, float valor) {
+	public void transferir(int numeroOrigem, int numeroDestino, float valor) {
 
 		Optional<Conta> contaOrigem = buscarNaCollection(numeroOrigem);
 		Optional<Conta> contaDestino = buscarNaCollection(numeroDestino);
@@ -98,11 +98,12 @@ public class ContaController implements ContaRepository {
 		if (contaOrigem.isPresent() && contaDestino.isPresent()) {
 			if (contaOrigem.get().sacar(valor) == true) {
 				contaDestino.get().depositar(valor);
-				System.out.println("O a transferencia da conta numero: " + numeroOrigem + " para conta numero "
-						+ numeroDestino + " foi efetuado com sucesso!");
+				System.out.println("A Transferência da Conta numero: " + numeroOrigem + " para a Conta numero: "
+						+ numeroDestino + " foi efetuada com sucesso!");
 			}
 		} else
-			System.out.println("A conta Origem/Destino não foi encontrada");
+			System.out.println("A Conta de Origem e/ou Destino não foram encontradas!");
+
 	}
 
 	// Métodos auxiliares
@@ -119,12 +120,6 @@ public class ContaController implements ContaRepository {
 		}
 
 		return Optional.empty();
-	}
-
-	@Override
-	public void transferir(int numeroOrigem, int numeroDestino, float valor) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
